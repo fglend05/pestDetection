@@ -1,0 +1,34 @@
+dog
+person
+cat
+tv
+car
+meatballs
+marinara sauce
+tomato soup
+chicken noodle soup
+french onion soup
+chicken breast
+ribs
+pulled pork
+hamburger
+cavity
+Alteria Leaf Spot
+Cucumber_AlteriaLeafSpot
+Mustard_AlteriaLeafSpot
+Cucumber_AngularLeafSpot
+StringBeans_BacterialBlight
+StringBeans_Rust
+Cabbage_Blight
+Cabbage_AlternariaLeafSpot
+Cabbage_BlackRotXanthomonas
+ww
+BitterGround_DowneyMildew
+StringBeans_Mosaic
+Eggplant_PhytophthoraBlight
+Cucumber_PhytophthoraBlight
+BitterGround_PowderyMildew
+Cucumber_PowderyMildew
+Eggplant_PowderyMildew
+Cabbage_Softrot
+Mustard_WhiteRust

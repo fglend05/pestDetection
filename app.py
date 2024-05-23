@@ -56,7 +56,10 @@ def predictRoute():
         result_dir = f"static/results/{timestamp}"
         os.makedirs(result_dir, exist_ok=True)
 
-        os.system(f"cd yolov5/ && python detect.py --weights best.pt --img 256 --conf 0.5 --source ../data/inputImage.jpg --save-txt")
+
+        
+        best_pt_path = "../best.pt"
+        os.system(f"cd yolov5/ && python detect.py --weights {best_pt_path} --img 256 --conf 0.5 --source ../data/inputImage.jpg --save-txt")
 
         opencodedbase64 = encodeImageIntoBase64("yolov5/runs/detect/exp/inputImage.jpg")
         class_names = [
@@ -98,7 +101,7 @@ def predictRoute():
         # Copy the results to static/history without zipping
         history_dir = f"static/history/{timestamp}"
         shutil.copytree("yolov5/runs/detect/exp", history_dir)
-        
+
         # Clean up the runs directory
         os.system("rm -rf yolov5/runs")
 

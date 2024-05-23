@@ -63,6 +63,7 @@ def predictRoute():
 
         
         best_pt_path = "../best.pt"
+        
         os.system(f"cd yolov5/ && python detect.py --weights {best_pt_path} --img 256 --conf 0.5 --source ../data/inputImage.jpg --save-txt")
 
         opencodedbase64 = encodeImageIntoBase64("yolov5/runs/detect/exp/inputImage.jpg")

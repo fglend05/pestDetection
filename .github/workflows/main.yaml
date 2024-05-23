@@ -86,7 +86,7 @@ jobs:
 
       - name: Stop and remove  container if running
         run: |
-          docker ps -q --filter "name=waste" | grep -q . && docker stop waste && docker rm -fv waste
+          docker ps -q --filter "name=pest" | grep -q . && docker stop waste && docker rm -fv waste
 
       - name: Run Docker Image to serve users
         run: |

@@ -1,8 +1,8 @@
 import sys, os
 from pestDetection.pipeline.training_pipeline import TrainPipeline
 from pestDetection.utils.main_utils import decodeImage, encodeImageIntoBase64, getPredictedLabels
-from flask import Flask, request, jsonify, render_template, Response, stream_with_context
-from flask_cors import CORS, cross_origin
+from flask import Flask, request, jsonify, render_template, Response, stream_with_context, url_for
+from flask_cors import CORS, cross_origin   
 from pestDetection.constant.application import APP_HOST, APP_PORT
 import cv2
 import shutil
@@ -29,10 +29,6 @@ def home():
 def detection():
     return render_template("detection.html")
 
-@app.route("/e-manual")
-def emanual():
-    return render_template("e-manual.html")
-
 @app.route("/history")
 def history():
     return render_template("history.html")
@@ -44,6 +40,14 @@ def result():
 @app.route("/sample")
 def sample():
     return render_template("sample.html")
+
+@app.route('/e-manual')
+def emanual():
+    pdf_folder = os.path.join(app.static_folder, 'pdf')
+    pdf_files = [file for file in os.listdir(pdf_folder) if file.endswith('.pdf')]
+    pdf_urls = [url_for('static', filename='pdf/' + file) for file in pdf_files]
+    pdf_files_info = [{'name': os.path.splitext(file)[0], 'url': url} for file, url in zip(pdf_files, pdf_urls)]
+    return render_template('e-manual.html', pdf_files=pdf_files_info)
 
 @app.route("/predict", methods=['POST', 'GET'])
 @cross_origin()

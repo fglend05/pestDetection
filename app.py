@@ -116,15 +116,12 @@ def predictRoute():
 
     return jsonify(result)
 
-@app.route("/download")
-def download():
-    return render_template("download.html")
 
-@app.route("/past_predictions")
-def past_predictions():
-    result_dir = "static/results/"
-    predictions = [d for d in os.listdir(result_dir) if os.path.isdir(os.path.join(result_dir, d))]
-    return render_template("past_predictions.html", predictions=predictions)
+@app.route('/get_files')
+def get_files():
+    directory = 'static/history'
+    files = os.listdir(directory)
+    return jsonify(files)
 
 def gen_frames():
     cap = cv2.VideoCapture(0)

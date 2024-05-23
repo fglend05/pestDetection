@@ -414,12 +414,56 @@
       var imageData = localStorage.getItem('predictedImageData');
       var predictedClass = localStorage.getItem('predictedClass');
       var accuracy = localStorage.getItem('accuracy');
-
       // Display the retrieved data
       if (imageData) {
         document.getElementById('predictedImage').src = 'data:image/jpeg;base64,' + imageData;
       }
       if (predictedClass) {
+        let selectedDisease;
+        switch (predictedClass) {
+          case 'Aphids':
+            predictedClass = 'Pests_Aphids';
+            selectedDisease = 'Pests_Aphids';
+            break;
+          case 'MelonFruitfly':
+            predictedClass = 'Pests_MelonFruitfly';
+            selectedDisease = 'Pests_MelonFruitfly';
+            break;
+          case 'MelonWorm':
+            predictedClass = 'Pests_MelonWorm';
+            selectedDisease = 'Pests_MelonWorm';
+            break;
+          case 'WhiteFly':
+            predictedClass = 'Pests_WhiteFly';
+            selectedDisease = 'Pests_WhiteFly';
+            break;
+          case 'ColoradoPotatoBeetle':
+            predictedClass = 'Pests_ColoradoPotatoBeetle';
+            selectedDisease = 'Pests_ColoradoPotatoBeetle';
+            break;
+          case 'FleaBeetles':
+            predictedClass = 'Pests_FleaBeetles';
+            selectedDisease = 'Pests_FleaBeetles';
+            break;
+          case 'CutWorms':
+            predictedClass = 'Pests_CutWorms';
+            selectedDisease = 'Pests_CutWorms';
+            break;
+          case 'DiamondbackMoth':
+            predictedClass = 'Pests_DiamondbackMoth';
+            selectedDisease = 'Pests_DiamondbackMoth';
+            break;
+          case 'Beetles':
+            predictedClass = 'Pests_Beetles';
+            selectedDisease = 'Pests_Beetles';
+            break;
+          case 'BeanFly':
+            predictedClass = 'Pests_BeanFly';
+            selectedDisease = 'Pests_BeanFly';
+            break;
+          default:
+            selectedDisease = predictedClass;
+        }
         var predictedParts = predictedClass.split('_');
 
         if (predictedParts.length === 2) {
@@ -427,7 +471,8 @@
           document.getElementById('disease').textContent = predictedParts[1];
 
           const selectedVegetable = predictedParts[0];
-          const selectedDisease = predictedParts[1];
+          let selectedDisease = predictedParts[1]; // Change const to let
+
           const vegetableData = diseaseData[selectedVegetable];
           const selectedDiseaseData = vegetableData.find(disease => disease.disease === selectedDisease);
 

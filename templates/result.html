@@ -322,6 +322,53 @@
       width: fit-content;
       text-align: center;
     }
+    @media only screen and (max-width: 600px){
+      .sidebar .bx-search{
+        background: none;
+      }
+      .home-section .home-title{
+        font-size: 1em;
+      }
+      .sidebar.open ~ .home-section{
+        left: 180px;
+        width: calc(100% - 180px);
+      }
+      .home-section .home-description{
+        font-size: .868em;
+      }
+      .home-section{
+        left: 50px;
+        width: calc(100% - 50px);
+      }
+      .sidebar li .tooltip {
+        display: none;
+      }
+      .sidebar {
+        width: 50px;
+        padding: 6px;
+      }
+      .sidebar.open{
+        width: 180px;
+      }
+      .sidebar i {
+        font-size: 17px;
+      }
+      .sidebar input,
+      .sidebar .bx-search{
+        display: none;
+      }
+      .sidebar li a:hover{
+        background: none;
+      }
+      .result-content{
+        display: block;
+      }
+      .result-content .intro,
+      .result-content .information{
+        width: 100%;
+        margin-bottom: 20px;
+      }
+    }
   </style>
 </head>
 <body>

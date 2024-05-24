@@ -310,6 +310,58 @@
     .view-pdf:hover {
       background-color: #86b049;
     }
+    @media only screen and (max-width: 600px){
+      .sidebar .bx-search{
+        background: none;
+      }
+      .home-section .home-title{
+        font-size: 1em;
+      }
+      .sidebar.open ~ .home-section{
+        left: 180px;
+        width: calc(100% - 180px);
+      }
+      .home-section .home-description{
+        font-size: .868em;
+      }
+      .home-section{
+        left: 50px;
+        width: calc(100% - 50px);
+      }
+      .sidebar li .tooltip {
+        display: none;
+      }
+      .sidebar {
+        width: 50px;
+        padding: 6px;
+      }
+      .sidebar.open{
+        width: 180px;
+      }
+      .sidebar i {
+        font-size: 17px;
+      }
+      .sidebar input,
+      .sidebar .bx-search{
+        display: none;
+      }
+      .sidebar li a:hover{
+        background: none;
+      }
+      .search-input{
+        margin: auto;
+        width: 98%;
+      }
+      #overflow{
+        margin: auto;
+        width: 98%;
+        overflow: auto;
+      }
+      table{
+        margin: 0;
+        width: 100%;
+      }
+    }
   </style>
 </head>
 <body>
@@ -360,43 +412,45 @@
     <div class="search-container">
       <input type="text" class="search-input" id="searchInput" placeholder="Search for PDF names...">
     </div>
-    <table id="pdfTable">
-      <thead>
-        <tr>
-          <th>PDF Name</th>
-          <th>Preview</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for pdf in pdf_files %}
+    
+    <div id="overflow">
+      <table id="pdfTable">
+        <thead>
           <tr>
-            <td>{{ pdf.name }}</td>
-            <td><embed src="{{ pdf.url }}" type="application/pdf" width="150px" height="70px" /></td>
-            <td><button class="view-pdf" data-url="{{ pdf.url }}">View PDF</button></td>
+            <th>PDF Name</th>
+            <th>Preview</th>
+            <th>Action</th>
           </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
   </section>
 
   <script>
-    function filterPDFs() {
-      const searchText = document.getElementById("searchInput").value.toLowerCase();
-      const rows = document.querySelectorAll("#pdfTable tbody tr");
-      rows.forEach(row => {
-        const pdfName = row.querySelector("td").innerText.toLowerCase();
-        if (pdfName.includes(searchText)) {
-          row.style.display = "";
-        } else {
-          row.style.display = "none";
-        }
+    // PDF Filtering
+    const pdfFiles = [
+      { name: "Mark", url: "{{ url_for('static', filename='pdf/mark.pdf') }}" },
+      { name: "Story Board", url: "{{ url_for('static', filename='pdf/story.pdf') }}" },
+      { name: "Vegetables", url: "{{ url_for('static', filename='pdf/vegetables.pdf') }}" },
+      { name: "Scope", url: "{{ url_for('static', filename='pdf/scope.pdf') }}" },
+    ];
+
+    function generateTableRows(pdfFiles) {
+      const tbody = document.querySelector("#pdfTable tbody");
+      tbody.innerHTML = "";
+      pdfFiles.forEach(pdf => {
+        const row = `
+          <tr>
+              <td>${pdf.name}</td>
+              <td><embed src="${pdf.url}" type="application/pdf" width="150px" height="70px" /></td>
+              <td><button class="view-pdf" data-url="${pdf.url}">View PDF</button></td>
+          </tr>
+        `;
+        tbody.innerHTML += row;
       });
-    }
 
-    document.getElementById("searchInput").addEventListener("input", filterPDFs);
-
-    document.addEventListener("DOMContentLoaded", () => {
+      // Attach event listener to "View PDF" buttons
       const viewButtons = document.querySelectorAll(".view-pdf");
       viewButtons.forEach(button => {
         button.addEventListener("click", function() {
@@ -404,9 +458,19 @@
           window.open(pdfUrl, "_blank");
         });
       });
-    });
+    }
 
-    // Sidebar toggle logic
+    function filterPDFs() {
+      const searchText = document.getElementById("searchInput").value.toLowerCase();
+      const filteredPDFs = pdfFiles.filter(pdf => pdf.name.toLowerCase().includes(searchText));
+      generateTableRows(filteredPDFs);
+    }
+
+    generateTableRows(pdfFiles);
+
+    document.getElementById("searchInput").addEventListener("input", filterPDFs);
+    // PDF Filtering End
+
     let sidebar = document.querySelector(".sidebar");
     let closeBtn = document.querySelector("#btn");
     let searchBtn = document.querySelector(".bx-search");

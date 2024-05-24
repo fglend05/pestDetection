@@ -412,45 +412,43 @@
     <div class="search-container">
       <input type="text" class="search-input" id="searchInput" placeholder="Search for PDF names...">
     </div>
-    
-    <div id="overflow">
-      <table id="pdfTable">
-        <thead>
+    <table id="pdfTable">
+      <thead>
+        <tr>
+          <th>PDF Name</th>
+          <th>Preview</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for pdf in pdf_files %}
           <tr>
-            <th>PDF Name</th>
-            <th>Preview</th>
-            <th>Action</th>
+            <td>{{ pdf.name }}</td>
+            <td><embed src="{{ pdf.url }}" type="application/pdf" width="150px" height="70px" /></td>
+            <td><button class="view-pdf" data-url="{{ pdf.url }}">View PDF</button></td>
           </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
+        {% endfor %}
+      </tbody>
+    </table>
   </section>
 
   <script>
-    // PDF Filtering
-    const pdfFiles = [
-      { name: "Mark", url: "{{ url_for('static', filename='pdf/mark.pdf') }}" },
-      { name: "Story Board", url: "{{ url_for('static', filename='pdf/story.pdf') }}" },
-      { name: "Vegetables", url: "{{ url_for('static', filename='pdf/vegetables.pdf') }}" },
-      { name: "Scope", url: "{{ url_for('static', filename='pdf/scope.pdf') }}" },
-    ];
-
-    function generateTableRows(pdfFiles) {
-      const tbody = document.querySelector("#pdfTable tbody");
-      tbody.innerHTML = "";
-      pdfFiles.forEach(pdf => {
-        const row = `
-          <tr>
-              <td>${pdf.name}</td>
-              <td><embed src="${pdf.url}" type="application/pdf" width="150px" height="70px" /></td>
-              <td><button class="view-pdf" data-url="${pdf.url}">View PDF</button></td>
-          </tr>
-        `;
-        tbody.innerHTML += row;
+    function filterPDFs() {
+      const searchText = document.getElementById("searchInput").value.toLowerCase();
+      const rows = document.querySelectorAll("#pdfTable tbody tr");
+      rows.forEach(row => {
+        const pdfName = row.querySelector("td").innerText.toLowerCase();
+        if (pdfName.includes(searchText)) {
+          row.style.display = "";
+        } else {
+          row.style.display = "none";
+        }
       });
+    }
 
-      // Attach event listener to "View PDF" buttons
+    document.getElementById("searchInput").addEventListener("input", filterPDFs);
+
+    document.addEventListener("DOMContentLoaded", () => {
       const viewButtons = document.querySelectorAll(".view-pdf");
       viewButtons.forEach(button => {
         button.addEventListener("click", function() {
@@ -458,19 +456,9 @@
           window.open(pdfUrl, "_blank");
         });
       });
-    }
+    });
 
-    function filterPDFs() {
-      const searchText = document.getElementById("searchInput").value.toLowerCase();
-      const filteredPDFs = pdfFiles.filter(pdf => pdf.name.toLowerCase().includes(searchText));
-      generateTableRows(filteredPDFs);
-    }
-
-    generateTableRows(pdfFiles);
-
-    document.getElementById("searchInput").addEventListener("input", filterPDFs);
-    // PDF Filtering End
-
+    // Sidebar toggle logic
     let sidebar = document.querySelector(".sidebar");
     let closeBtn = document.querySelector("#btn");
     let searchBtn = document.querySelector(".bx-search");
